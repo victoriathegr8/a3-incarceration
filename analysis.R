@@ -87,7 +87,8 @@ county_shapes <- map_data("county") %>%
   unite(polyname, region, subregion, sep = ",") %>%
   left_join(county.fips, by = "polyname")
 
-midwest <- c("IL", "IN", "IA", "KS", "MI", "MN", "MO", "NE", "ND", "OH", "SD", "WI")
+midwest <- c("IL", "IN", "IA", "KS", "MI", "MN",
+             "MO", "NE", "ND", "OH", "SD", "WI")
 
 map_data <- county_shapes %>%
   left_join(most_recent, by = "fips") %>%
