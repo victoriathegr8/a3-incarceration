@@ -1,0 +1,59 @@
+---
+title: "Incarceration in the US Report"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lintr)
+library(styler)
+library(maps)
+library(knitr)
+library(patchwork)
+source("analysis.R")
+```
+
+This report will analyze the incarceration trends dataset from the Vera Institute of Justice. The prison and jail system in America is extremely reflective of the country’s history of racism, and continues to perpetuate that racism by disproportionately incarcerating people of color. Although this dataset contains many features, this report will focus only a few. These variables include:
+
+- `black_jail_pop` - jail population count, black
+- `white_jail_pop` - jail population count, white
+- `total_jail_pop` - total jail population count
+- `black_prison_pop` - prison population count, black
+- `white_prison_pop` - prison population count, white
+- `total_prison_pop` - total prison population count
+- `black_pop_15to64` - black population count, ages 15 to 64
+- `white_pop_15to64` - white population count, ages 15 to 64
+- `total_pop_15to64` - total population count, ages 15 to 64
+- `black_prison_adm` - prison admission count, black
+
+`black_jail_pop`, `white_jail_pop`, `black_prison_pop` and `white_prison_pop` will be used to distinguish incarceration rates for different races. `total_jail_pop` and `total_prison_pop` will be used to put these rates into perspective amongst all incarcerations. `black_pop_15to64` and `white_pop_15to64` will be used to get a better sense of the populations of different races in the US that are statistically within the age range of (being likely of) becoming incarcerated. `total_pop_15to64` will be used to put these populations into perspective amongst all people in that age range. `black_prison_adm` will be used to observe the rates of incoming black inmates, which gives a different outlook on incarceration than the accumulation of inmates over time.
+
+## Summary
+
+In 2018, `r black_jail_prop * 100`% of the total jail population was black, while `r white_jail_prop * 100`% was white. At first glance, it seems like white populations are at higher risk of being incarcerated, since they comprise `r diff_jail_prop * -100`% more of the jail population than the black population. However, to put this into perspective, let's look at how the general black and white population compares to the total general population. In 2018, `r black_pop * 100`% of the total population aged 15-64 (the age range most likely to be incarcerated) is black, while `r white_pop * 100`% is white. That means, if the jail population and the total US population of ages 15-64 was racially proportionate,
+
+- a black person is `r black_jail_diff * -100`% more likely to be sent to jail and
+- a white person is `r white_jail_diff * 100`% less likely to be sent to jail
+
+just based on the difference of their race. To put it another way, in `r higher_black_proportion` states, you are more likely to be sent to jail if you are black.
+
+Here's some other quick stats. The year with the highest black prison admission rate (black admissions over all admissions) was `r year_most_black_prison_adm`. In 2013, the year that the Black Lives Matter movement began, the state that had the highest black prison admission rate was `r state_most_black_prison_adm`.
+
+```{r echo = FALSE}
+black_prison_prop_chart
+```
+
+This chart displays the change in the proportion of prison populations being black over time in five states. These states were chosen because they are among the lowest ranking in the country for racial education inequality (the bottom 15, to be exact). This chart is included in this report in order to see the country's progress of closing the gap of the ratio of black prison populations to general black populations. Over time, the proportions have seemed to decrease. However, not all of the states have decreased at the same rate. South Carolina, Pennsylvania, and Wisconsin have decreased by about 10%, while New York and Michigan have barely decreased at all. This shows that as a whole, the US still hasn't unanimously made an effort to address the disproportionate incarceration of people of color.
+
+```{r echo = FALSE, warning = FALSE}
+black_jail_chart
+```
+
+This chart demonstrates the relationship between the white population aged 15-64 and the black jail population. It is included in this report because it could show if white-dominated counties are more likely to incarcerate people of color, since they outnumber them. There seems to be a positive relationship between the two variables. Although, a majority of the data skews toward there not being a strong positive relationship, but that may be because of the abundance of counties with a low population in comparison to the outliers. This chart might show that white-dominated counties are more likely to incarcerate people of color, but it also just might show that incaracerated people of color populations grow proportionally to the total population.
+
+```{r echo = FALSE}
+combined_maps
+```
+
+These maps show the distribution of the white and black jail populations in the Midwest in 2018. The states of the Midwest were chosen because many of the Midwestern states rank fairly low in terms of racial equality. They are included in this report to show how jail populations may differ by location and race. Although the white jail population seems to be more spread out, the range of that population is much smaller than that of the black jail population. Black jail population seems to be mostly concentrated in one area, but that area is four times higher than the highest area in the white jail population map. This doesn't automatically prove anything, but it does beg about why this occurs. For example, if a majority of the black incarcerated population are pushed to a centralized location, is it easier to treat them unfairly/poorly?
